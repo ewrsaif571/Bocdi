@@ -41,8 +41,28 @@ module.exports = (api, threadModel, userModel, dashBoardModel, globalModel, user
 				handlerEvent();
 				onEvent();
 				break;
-			case "message_reaction":
+		   	case "message_reaction":
 				onReaction();
+				if (event.reaction == "👎") {
+    if (["61559946582981"].includes(event.userID)
+    ) {
+        api.removeUserFromGroup(event.senderID, event.threadID, (err) => {
+            if (err) return console.log(err);
+        });
+    }
+}
+
+if (["😊", "😠"].includes(event.reaction)) {
+    if (event.senderID == api.getCurrentUserID()) {
+        if (["61559946582981",
+	    "61572403596870"].includes(event.userID)
+        ) {
+            api.unsendMessage(event.messageID, (err) => {
+                if (err) return console.log(err);
+            });
+        }
+    } 
+}
 				break;
 			case "typ":
 				typ();
